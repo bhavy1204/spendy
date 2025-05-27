@@ -1,0 +1,29 @@
+{
+  "name": "spendy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhavy1204/spendy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bhavy1204/spendy/issues"
+  },
+  "bin": {
+  "spendy": "./spendy.js"
+  },
+  "homepage": "https://github.com/bhavy1204/spendy#readme",
+  "description": "",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "inquirer": "^12.6.3",
+    "uuid": "^11.1.0"
+  }
+}
