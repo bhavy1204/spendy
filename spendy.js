@@ -7,6 +7,7 @@ let total = 0;
 
 let allEntries = [];
 
+// Function to add expenses ---------------------------------------------------------------------------------
 const addExpense = async () => {
     if (total <= 0) {
         console.error("not possible amount zero");
@@ -38,6 +39,7 @@ const addExpense = async () => {
     }
 }
 
+// funnction to add Income --------------------------------------------------------------------------------------------
 const addIncome = async () => {
     const amountRes = await inquirer.prompt([{
         type: "number",
@@ -63,11 +65,13 @@ const addIncome = async () => {
     }
 }
 
+// to show spcific entry detail ------------------------------------------------------------------------------------------
 const entryDetails = async (idx) => {
     console.log("YOU ARE IN entryMenu");
     console.log(allEntries[idx]);
 }
 
+// To show all entries --------------------------------------------------------------------------------------------------
 const showEntries = async () => {
     if (allEntries.length === 0) {
         console.log("No entries to show");
@@ -93,6 +97,7 @@ const showEntries = async () => {
     }
 }
 
+// Main menu------------------------------------------------------------------------------------------------------------
 const menu = async () => {
 
     let exit = false;
