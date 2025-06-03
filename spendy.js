@@ -6,6 +6,7 @@ import { validate } from 'uuid';
 let total = 0;
 
 let allEntries = [];
+let expensesEntries = [];
 
 // Function to add expenses ---------------------------------------------------------------------------------
 const addExpense = async () => {
@@ -33,6 +34,7 @@ const addExpense = async () => {
         }])
         total -= amountRes.amount;
         allEntries.push({ amount: amountRes.amount, note: noteRes.note, createdAt: createdAt });
+        expensesEntries.push({ amount: amountRes.amount, note: noteRes.note, createdAt: createdAt });
         console.log("Entry added successfully");
         await new Promise(r => setTimeout(r, 1000));
         console.clear();
@@ -73,27 +75,47 @@ const entryDetails = async (idx) => {
 
 // To show all entries --------------------------------------------------------------------------------------------------
 const showEntries = async () => {
+
     if (allEntries.length === 0) {
         console.log("No entries to show");
         return;
     } else {
-        const choices = allEntries.map((e, i) => ({
-            name: `Entry no:${i + 1}\nCreated at: ${e.createdAt}\nAmount: ${e.amount}\nNote: ${e.note}`,
-            value: i,
-        }));
 
-        choices.push({name: "EXIT", value: -1});
-
-        const res = await inquirer.prompt([{
-            name: "entryChoice",
-            message: "ALL ENTRIES",
-            type: "list",
-            choices: choices
+        const filterRes = await inquirer.prompt([{
+            type: "confirm",
+            name: "wantsFilter",
+            message: "Do you want to apply a filter?",
+            default: false
         }]);
+        if (filterRes.wantsFilter) {
+            const filterType = await inquirer.prompt([{
+                type:"list",
+                name:"filterName",
+                message:"Choose filter from below ",
+                choices:[
+                    "Most expensive first "
+                ]
+            }])
+        } else {
+            const choices = allEntries.map((e, i) => ({
+                name: `Entry no:${i + 1}\nCreated at: ${e.createdAt}\nAmount: ${e.amount}\nNote: ${e.note}`,
+                value: i,
+            }));
 
-        if(res.entryChoice===-1)
-            return;
-        await entryDetails(res.entryChoice);
+            choices.push({ name: "EXIT", value: -1 });
+
+            const res = await inquirer.prompt([{
+                name: "entryChoice",
+                message: "ALL ENTRIES",
+                type: "list",
+                choices: choices
+            }]);
+
+            if (res.entryChoice === -1)
+                return;
+            await entryDetails(res.entryChoice);
+
+        }
     }
 }
 
@@ -109,8 +131,10 @@ const menu = async () => {
             choices: [
                 "1. expense",
                 "2. income",
-                "3. view total",
-                "4. Exit"
+                "3. View all expenses",
+                "4. View all income",
+                "5. View total",
+                "6. Exit"
             ]
         }])
 
@@ -123,7 +147,7 @@ const menu = async () => {
                 console.log("No entriess to show");
             else
                 await showEntries();
-        } else if (res.choice === "4. Exit") {
+        } else if (res.choice === "6. Exit") {
             exit = true;
         }
     }
