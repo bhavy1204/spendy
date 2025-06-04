@@ -7,6 +7,7 @@ let total = 0;
 
 let allEntries = [];
 let expensesEntries = [];
+let incomeEntries = [];
 
 // Function to add expenses ---------------------------------------------------------------------------------
 const addExpense = async () => {
@@ -61,6 +62,7 @@ const addIncome = async () => {
         }])
         total += amountRes.amount;
         allEntries.push({ amount: amountRes.amount, note: noteRes.note, createdAt: createdAt });
+        incomeEntries.push({ amount: amountRes.amount, note: noteRes.note, createdAt: createdAt });
         console.log("Entry added successfully");
         await new Promise(r => setTimeout(r, 1000));
         console.clear();
@@ -69,12 +71,11 @@ const addIncome = async () => {
 
 // to show spcific entry detail ------------------------------------------------------------------------------------------
 const entryDetails = async (idx) => {
-    console.log("YOU ARE IN entryMenu");
     console.log(allEntries[idx]);
 }
 
 // To show all entries --------------------------------------------------------------------------------------------------
-const showEntries = async () => {
+const showAllEntries = async () => {
 
     if (allEntries.length === 0) {
         console.log("No entries to show");
@@ -89,10 +90,10 @@ const showEntries = async () => {
         }]);
         if (filterRes.wantsFilter) {
             const filterType = await inquirer.prompt([{
-                type:"list",
-                name:"filterName",
-                message:"Choose filter from below ",
-                choices:[
+                type: "list",
+                name: "filterName",
+                message: "Choose filter from below ",
+                choices: [
                     "Most expensive first "
                 ]
             }])
@@ -142,11 +143,27 @@ const menu = async () => {
             await addExpense();
         } else if (res.choice === "2. income") {
             await addIncome();
-        } else if (res.choice === "3. view total") {
-            if (allEntries.length === 0)
+        } else if (res.choice === "3. View all expenses") {
+
+            if (expensesEntries.length === 0)
                 console.log("No entriess to show");
             else
                 await showEntries();
+
+        } else if (res.choice === "4. View all income") {
+
+            if (incomeEntries.length === 0)
+                console.log("No entriess to show");
+            else
+                await showEntries();
+
+        } else if (res.choice === "5. View total") {
+
+            if (allEntries.length === 0)
+                console.log("No entriess to show");
+            else
+                await showAllEntries();
+
         } else if (res.choice === "6. Exit") {
             exit = true;
         }
