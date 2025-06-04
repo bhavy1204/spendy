@@ -120,6 +120,100 @@ const showAllEntries = async () => {
     }
 }
 
+// To show all expenses entries-----------------------------------------------------------------------------------------
+const showAllExpenseEntries = async () => {
+
+    if (allEntries.length === 0) {
+        console.log("No entries to show");
+        return;
+    } else {
+
+        const filterRes = await inquirer.prompt([{
+            type: "confirm",
+            name: "wantsFilter",
+            message: "Do you want to apply a filter?",
+            default: false
+        }]);
+        if (filterRes.wantsFilter) {
+            const filterType = await inquirer.prompt([{
+                type: "list",
+                name: "filterName",
+                message: "Choose filter from below ",
+                choices: [
+                    "Most expensive first "
+                ]
+            }])
+        } else {
+            const choices = allEntries.map((e, i) => ({
+                name: `Entry no:${i + 1}\nCreated at: ${e.createdAt}\nAmount: ${e.amount}\nNote: ${e.note}`,
+                value: i,
+            }));
+
+            choices.push({ name: "EXIT", value: -1 });
+
+            const res = await inquirer.prompt([{
+                name: "entryChoice",
+                message: "ALL ENTRIES",
+                type: "list",
+                choices: choices
+            }]);
+
+            if (res.entryChoice === -1)
+                return;
+            await entryDetails(res.entryChoice);
+
+        }
+    }
+}
+
+// To show all income entries--------------------------------------------------------------------------------------------
+
+const showAllIncomeEntries = async () => {
+
+    if (allEntries.length === 0) {
+        console.log("No entries to show");
+        return;
+    } else {
+
+        const filterRes = await inquirer.prompt([{
+            type: "confirm",
+            name: "wantsFilter",
+            message: "Do you want to apply a filter?",
+            default: false
+        }]);
+        if (filterRes.wantsFilter) {
+            const filterType = await inquirer.prompt([{
+                type: "list",
+                name: "filterName",
+                message: "Choose filter from below ",
+                choices: [
+                    "Most expensive first "
+                ]
+            }])
+        } else {
+            const choices = allEntries.map((e, i) => ({
+                name: `Entry no:${i + 1}\nCreated at: ${e.createdAt}\nAmount: ${e.amount}\nNote: ${e.note}`,
+                value: i,
+            }));
+
+            choices.push({ name: "EXIT", value: -1 });
+
+            const res = await inquirer.prompt([{
+                name: "entryChoice",
+                message: "ALL ENTRIES",
+                type: "list",
+                choices: choices
+            }]);
+
+            if (res.entryChoice === -1)
+                return;
+            await entryDetails(res.entryChoice);
+
+        }
+    }
+}
+
+
 // Main menu------------------------------------------------------------------------------------------------------------
 const menu = async () => {
 
@@ -148,14 +242,14 @@ const menu = async () => {
             if (expensesEntries.length === 0)
                 console.log("No entriess to show");
             else
-                await showEntries();
+                await showAllExpenseEntries();
 
         } else if (res.choice === "4. View all income") {
 
             if (incomeEntries.length === 0)
                 console.log("No entriess to show");
             else
-                await showEntries();
+                await showAllIncomeEntries();
 
         } else if (res.choice === "5. View total") {
 
