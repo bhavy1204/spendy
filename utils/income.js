@@ -1,5 +1,7 @@
 import inquirer from 'inquirer';
 import { state } from '../store/data';
+import pauseAndWait from './pauseAndClear';
+
 
 export const addIncome = async () => {
     const amountRes = await inquirer.prompt([{
@@ -9,8 +11,7 @@ export const addIncome = async () => {
     }]);
     if (amountRes.amount <= 0) {
         console.error("Not valid amount");
-        await new Promise(r => setTimeout(r, 2000));
-        console.clear();
+        pauseAndWait();
     } else {
         let createdAt = new Date().toLocaleString();
         let noteRes = await inquirer.prompt([{
